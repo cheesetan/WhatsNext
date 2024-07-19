@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F371A2DF2C4A09500012EF3B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371A2DE2C4A09500012EF3B /* OnboardingView.swift */; };
 		F3D7721A2C49FF4A0009078C /* WhatsNextApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D772192C49FF4A0009078C /* WhatsNextApp.swift */; };
 		F3D7721C2C49FF4A0009078C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D7721B2C49FF4A0009078C /* ContentView.swift */; };
 		F3D7721E2C49FF4A0009078C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D7721D2C49FF4A0009078C /* Item.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F371A2DE2C4A09500012EF3B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		F3D772162C49FF4A0009078C /* WhatsNext.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatsNext.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3D772192C49FF4A0009078C /* WhatsNextApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNextApp.swift; sourceTree = "<group>"; };
 		F3D7721B2C49FF4A0009078C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				F3D7722C2C4A01600009078C /* WelcomeView.swift */,
+				F371A2DE2C4A09500012EF3B /* OnboardingView.swift */,
 				F3D7722E2C4A01840009078C /* SDExampleView.swift */,
 			);
 			path = UI;
@@ -173,6 +176,7 @@
 				F3D7722F2C4A01840009078C /* SDExampleView.swift in Sources */,
 				F3D7721C2C49FF4A0009078C /* ContentView.swift in Sources */,
 				F3D7721E2C49FF4A0009078C /* Item.swift in Sources */,
+				F371A2DF2C4A09500012EF3B /* OnboardingView.swift in Sources */,
 				F3D7721A2C49FF4A0009078C /* WhatsNextApp.swift in Sources */,
 				F3D7722D2C4A01600009078C /* WelcomeView.swift in Sources */,
 			);
