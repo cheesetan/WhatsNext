@@ -13,7 +13,7 @@ struct ContentView: View {
     @AppStorage("showingWelcome") var showingWelcome = true
     
     var body: some View {
-        OnboardingView()
+        SetupView()
             .sheet(isPresented: $showingWelcome) {
                 WelcomeView(showingWelcome: $showingWelcome)
             }
