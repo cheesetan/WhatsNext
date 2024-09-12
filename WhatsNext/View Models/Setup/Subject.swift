@@ -1,17 +1,16 @@
 //
-//  Timetable.swift
+//  Subject.swift
 //  WhatsNext
 //
 //  Created by Tristan Chay on 11/9/24.
 //
 
 import SwiftUI
-import PhotosUI
 
-class Timetable: ObservableObject {
-    static let shared: Timetable = .init()
+class Subject: ObservableObject {
+    static let shared: Subject = .init()
     
-    @Published var subjects: [[TimetableLesson]] = [] {
+    @Published var subjects: [SubjectItem] = [] {
         didSet {
             save()
         }
@@ -22,25 +21,25 @@ class Timetable: ObservableObject {
     }
     
     private func getArchiveURL() -> URL {
-        let plistName = "timetable.plist"
+        let plistName = "subjects.plist"
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         
         return documentsDirectory.appendingPathComponent(plistName)
     }
     
-    private func save() {
+    func save() {
         let archiveURL = getArchiveURL()
         let propertyListEncoder = PropertyListEncoder()
         let encodedTimetableLessons = try? propertyListEncoder.encode(subjects)
         try? encodedTimetableLessons?.write(to: archiveURL, options: .noFileProtection)
     }
     
-    private func load() {
+    func load() {
         let archiveURL = getArchiveURL()
         let propertyListDecoder = PropertyListDecoder()
                 
         if let retrievedTimetableLessonData = try? Data(contentsOf: archiveURL),
-           let timetableLessonDecoded = try? propertyListDecoder.decode([[TimetableLesson]].self, from: retrievedTimetableLessonData) {
+           let timetableLessonDecoded = try? propertyListDecoder.decode([SubjectItem].self, from: retrievedTimetableLessonData) {
             subjects = timetableLessonDecoded
         }
     }

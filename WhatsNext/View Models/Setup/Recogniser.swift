@@ -7,10 +7,10 @@
 
 import SwiftUI
 import Vision
-import Observation
+import PhotosUI
 
-@Observable
-class Recogniser {
+class Recogniser: ObservableObject {
+    static let shared: Recogniser = .init()
     
     private var lessonsAttending: [String] = [
         "CL",
@@ -27,25 +27,46 @@ class Recogniser {
         "ADV/ASSB"
     ]
     
-    private(set) var extractedLessons: [ExtractedLesson] = []
+    @Published var image: UIImage?
+    @Published var progress: Double = 1.0
+    @Published private(set) var extractedLessons: [[ExtractedLesson]] = []
     
-    func recognizeText(image: UIImage) {
+    @ObservedObject private var subject: Subject = .shared
+    
+    func processPhotosPickerItem(item: PhotosPickerItem?) {
+        self.extractedLessons = []
+        self.setProgress(to: 0)
+        Task {
+            guard let imageData = try await item?.loadTransferable(type: Data.self) else { self.setProgress(to: 0); return }
+            guard let image = UIImage(data: imageData) else { self.setProgress(to: 0); return }
+            self.image = image.imageWithOrientationSetToUp()
+            self.setProgress(to: 0.2)
+            recognizeText(image: image)
+        }
+    }
+    
+    private func recognizeText(image: UIImage) {
         var lessons: [ExtractedLesson] = []
         
         guard let cgImage = image.cgImage else { return }
         let request = VNRecognizeTextRequest { (request, error) in
+            self.setProgress(to: 0.4)
             guard let observations = request.results as? [VNRecognizedTextObservation], error == nil else {
                 print("Text recognition error: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }
+            self.setProgress(to: 0.6)
             for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { continue }
                 lessons.append(ExtractedLesson(name: topCandidate.string, position: observation.boundingBox))
             }
+            self.setProgress(to: 0.8)
             DispatchQueue.main.async {
-                let validLessons = lessons.filter({ self.lessonsAttending.contains($0.name) })
-                self.extractedLessons = validLessons
-                print(self.groupByDaysWithDeviations(lessons: validLessons, yTolerance: 0.02).map({ $0.map({ $0.name }) }))
+                self.subject.load()
+                print(self.subject.subjects.map({ $0.name }))
+                let validLessons = lessons.filter({ self.subject.subjects.map({ $0.name }).contains($0.name) })
+                self.extractedLessons = self.groupByDaysWithDeviations(lessons: validLessons, yTolerance: 0.02)
+                self.setProgress(to: 1.0)
             }
         }
         request.recognitionLevel = .accurate
@@ -87,6 +108,16 @@ class Recogniser {
     
     private func averageY(for group: [ExtractedLesson]) -> CGFloat {
         return group.map { $0.position.origin.y }.reduce(0, +) / CGFloat(group.count)
+    }
+    
+    private func setProgress(to value: Double) {
+        if value != 0 {
+            withAnimation {
+                self.progress = value
+            }
+        } else {
+            self.progress = value
+        }
     }
 }
 

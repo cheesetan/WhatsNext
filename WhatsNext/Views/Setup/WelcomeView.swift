@@ -96,6 +96,5 @@ struct WelcomeView: View {
 }
 
 #Preview {
-    @Previewable @State var showingWelcome = true
-    WelcomeView(showingWelcome: $showingWelcome)
+    WelcomeView(showingWelcome: .constant(true))
 }

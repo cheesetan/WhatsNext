@@ -10,10 +10,12 @@ import SwiftData
 
 struct ContentView: View {
     
+    @StateObject private var timetable = Timetable()
     @AppStorage("showingWelcome") var showingWelcome = true
     
     var body: some View {
-        SetupView()
+        TimetableInformationView()
+            .environmentObject(timetable)
             .sheet(isPresented: $showingWelcome) {
                 WelcomeView(showingWelcome: $showingWelcome)
             }
